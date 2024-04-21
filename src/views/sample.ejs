@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="../Band/assets/font/themify-icons-font/themify-icons/themify-icons.css">
+    <style>
+        body {
+            font-family: "Poppins-Regular";
+            background-color: rgb(223, 220, 220);
+        }
+        .container {
+            max-width: 1200px;
+            margin:0 auto;
+        }
+        .box-header {
+            position: relative
+        }
+        .button-add {
+            position: absolute;
+            top:0px;
+            right: 0px;
+
+   
+        }
+        .button-add > button {
+            font-size: 15px;
+            border: none;
+            border-radius: 10px;
+            background-color: #713fff;
+            color:white;
+            font-weight: 500;
+            padding: 10px 20px;
+            box-shadow: 3px 2px rgb(196, 194, 194);
+        }
+        .button-add > button > i {
+            margin-right: 5px;
+        }
+        .box-header > .box-title > .title {
+            font-family: "Poppins-Bold";
+            font-weight: 700;
+            font-size: 30px;
+    
+        }
+        .box-body {
+            margin-top: 15px;
+        
+        }
+        .box-body .task {
+            width: 100%;
+            height: 100px;
+            background-color: white;
+            border-radius: 15px;
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .box-body .task .title {
+            padding-left: 25px;
+            width: 30%;
+        }
+        .box-body .task .title .title-task {
+            color: grey;
+            margin-bottom: 0;
+        }
+
+        .box-body .task .title .title-content {
+            margin-top: 5px;
+
+        }
+
+        .box-body .task .priority {
+            width: 20%;
+        }
+        .box-body .task .priority .title-priority {
+            color: grey;
+            margin-bottom: 0;
+        }
+
+        .box-body .task .priority .priority-content {
+            margin-top: 5px;
+        
+            font-weight: 700;
+
+        }
+
+        .high {
+            color: red;
+         }
+
+        .medium {
+            color: #ffbd21;
+         }
+
+        .low{
+            color: #0ac947;
+        }
+
+        .btnH, .btnL, .btnM {
+            background-color: #fff;
+
+        }
+
+        .btnL {
+            border: 1px solid #0ac947;
+        }
+
+        .btnM {
+            border: 1px solid #ffbd21;
+            
+        }
+
+        .btnH{
+            border: 1px solid red;
+        }
+
+
+
+
+        .box-body .task .status {
+            width: 20%;
+            position: relative;
+        }
+
+        .box-body .task .status .badget {
+            background-color: hsla(217,9%,53%,.14);
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #7d8592;
+            position: absolute;
+            top: 30px;
+        }
+        .box-body .task .inprogress {
+            position: relative;
+            width: 10%;
+        }
+
+        .box-body .task .action {
+            position: relative;
+            width: 20%;
+        }
+
+        .box-body .task .action .fa-pencil-square-o{
+            position: absolute;
+            padding: 0px ;
+            bottom: 40px;
+            font-size: 25px;
+        }
+
+        .box-body .task .action .fa-trash{
+            position: absolute;
+            left: 50px;
+            bottom: 42px;
+            font-size: 25px;
+            color: red;
+        }
+
+        .progress-bar-0 {
+        position: absolute;
+        bottom: 45px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: 
+        radial-gradient(closest-side, white 79%, transparent 80% 100%),
+        conic-gradient(#7052c4 0%, rgb(202, 196, 196) 0);    
+        }
+        
+        .progress-bar-50 {
+        position: absolute;
+        bottom: 45px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: 
+        radial-gradient(closest-side, white 79%, transparent 80% 100%),
+        conic-gradient(#7052c4 50%, rgb(202, 196, 196) 0);    
+        }
+
+        .progress-bar-100 {
+        position: absolute;
+        bottom: 45px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: 
+        radial-gradient(closest-side, white 79%, transparent 80% 100%),
+        conic-gradient(#7052c4 100%, rgb(202, 196, 196) 0);    
+        }
+
+
+    /* Modal */
+        .modal{
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+
+        .modal.open{
+            display: flex;
+        }
+
+
+        .modal-container{
+            background-color: #fff;
+            border-radius: 24px;
+            box-shadow: 0 6px 58px rgba(121,145,173,.196);
+            margin: 15% auto;
+            min-height: 200px;
+            padding: 40px 60px;
+            width: 40%;
+            animation: modalFadeIn ease 0.5s;
+        }
+
+        .modal-task{
+            position: relative;
+            color: #121212;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+        
+        .ti-close{
+            position: absolute;
+            right: 0;
+            font-size: 16px;
+            padding-left: 10px;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .ti-close:hover{
+            opacity: 0.5;
+        }
+
+        .modal-label{
+            display: block;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .modal-input{
+            background: #fff;
+            border: 1px solid #d8e0f0;
+            border-radius: 14px;
+            box-shadow: 0 1px 2px rgba(184,200,224,.222);
+            font-weight: 400;
+            outline: none;
+            padding: 16px 18px;
+            width: 90%;
+        }
+        .modal-priority{
+            margin-top: 20px;
+        }
+        .modal-priority .buttons{
+            display: flex;
+            gap: 50px;
+            margin-top: 12px;
+            
+        }
+
+        .modal-button{
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 550;
+            padding: 10px 0;
+            text-align: center;
+            text-transform: capitalize;
+            width: 90px;
+        }
+
+        .add{
+            margin-top: 50px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .modal-add{
+            background: #713fff;
+            border-radius: 14px;
+            border: none;
+            box-shadow: 0 6px 12px rgba(113,63,255,.25);
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            padding: 13px 30px;
+        }
+        .message{
+            font-family: 'Times New Roman', Times, serif;
+            
+        }
+      
+        @keyframes modalFadeIn{
+            from{
+                opacity: 0.6;
+                transform: translateY(-140px);
+            }
+            to{
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-title">
+                    <h4 class="title">Task List</h4>
+                </div>
+                <div class="button-add">
+                    <button class="btn-add js-btn-add"><i class="fa fa-plus" aria-hidden="true"></i> Add Task</button>
+                </div>
+                
+            </div>
+            
+            <div  id="box-id" class="box-body">
+
+                <!-- <div class="task">
+                    <div class="title">
+                        <p class="title-task">Task</p>
+                        <p class="title-content">Read a book</p>
+                    </div>
+                    <div class="priority">
+                        <p class="title-priority">Priority</p>
+                        <p class="priority-content low">Low</p>
+                    </div>
+                    <div class="status">
+                            <span class="badget">Done</span>
+                    </div>
+
+                    <div class="inprogress">
+                        <div class="progress-bar-50">
+                        
+                          </div>
+                    </div>
+                    <div class="action">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </div>
+                </div> -->
+
+
+                <!-- <div class="task">
+                    <div class="title">
+                        <p class="title-task">Task</p>
+                        <p class="title-content">Go to market</p>
+                    </div>
+                    <div class="priority">
+                        <p class="title-priority">Priority</p>
+                        <p class="priority-content medium">Medium</p>
+                    </div>
+                    <div class="status">
+                            <span class="badget">In Progress</span>
+                    </div>
+
+                    <div class="inprogress">
+                        <div class="progress-bar-100">
+                        
+                          </div>
+                    </div>
+                    <div class="action">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </div>
+                </div> -->
+            <!-- </div>
+        </div> -->
+    </div>
+
+    <div id="modal-id" class="modal js-modal">
+      <div class="modal-container js-modal-container">
+            <div class="modal-container-header">
+                <div class="modal-task js-modal-task">
+                    Add Task <i class="ti-close"> </i></div>
+            </div>
+
+
+            <div class="modal-container-body">
+                <label for="task-input" class="modal-label">
+                    Task
+                </label>
+                <input id="task-input" type="text" class="modal-input" placeholder="Type your task here">
+                <span class="message"></span>
+            </div>
+
+            
+            <div class="modal-priority">
+                <span>Priority</span>
+                <div class="buttons">
+                    <button class="modal-button btnH high">High</button>
+                    <button class="modal-button btnM medium">Medium</button>
+                    <button class="modal-button btnL low">Low</button>
+                </div>
+            </div>
+            <div class="add">
+                <button class="modal-add">
+                        Add
+                </button>
+            </div>
+        </div>  
+
+    </div>
+
+    <script src="./script.js">
+    </script>
+    <script>  
+        Validator({
+            className: '.modal-container-body',
+            rule:
+                [
+                Validator.isRequired('#task-input'),
+                
+            ]
+        });
+    </script>
+
+    
+
+
+
+
+</body>
+</html>
